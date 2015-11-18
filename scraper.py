@@ -122,12 +122,13 @@ def Navigation(link):
             button.click()
 
 def main():
-    urls = ["https://nhssbs.eu-supply.com/ctm/supplier/publictenders?b=NHSSBS",\
-        "https://uk.eu-supply.com/ctm/supplier/publictenders?B=UK",\
-        "https://uk.eu-supply.com/ctm/supplier/publictenders?B=BLUELIGHT",\
-        "https://uk.eu-supply.com/ctm/Supplier/PublicTenders",\
-        "https://tactica-live.advanced365.com/ctm/Supplier/PublicTenders",\
-        "https://eu.eu-supply.com/ctm/supplier/publictenders?B="]
+    urls = [
+        "https://nhssbs.eu-supply.com/ctm/supplier/publictenders?b=NHSSBS",
+        "https://uk.eu-supply.com/ctm/supplier/publictenders?B=UK",
+        "https://uk.eu-supply.com/ctm/supplier/publictenders?B=BLUELIGHT",
+        "https://uk.eu-supply.com/ctm/Supplier/PublicTenders",
+        "https://tactica-live.advanced365.com/ctm/Supplier/PublicTenders"
+        ]
 
     for link in urls:
         Navigation(link)
