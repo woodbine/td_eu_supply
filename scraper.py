@@ -95,17 +95,17 @@ def page_details(browser, link):
 			COUNTRIES = ""
 
 
-		data = {"RFT_ID" : unicode(RFT_ID) ,\
-			"REFERENCE": unicode(REFERENCE) ,\
-			"NAME": unicode(NAME), \
-			"URL": unicode(URL), \
-			"DATE_OF_PUBLICATION": unicode(DATE_OF_PUBLICATION), \
-			"DATE_OF_PUBLICATION_clean": unicode(DATE_OF_PUBLICATION_clean), \
-			"RESPONSE_DEADLINE": unicode(RESPONSE_DEADLINE), \
-			"RESPONSE_DEADLINE_clean": unicode(RESPONSE_DEADLINE_clean), \
-			"PROCESS": unicode(PROCESS), \
-			"BUYERS": unicode(BUYERS), \
-			"COUNTRIES": unicode(COUNTRIES)}
+		data = {"RFT_ID" : unicode(RFT_ID).strip(),
+                "REFERENCE": unicode(REFERENCE).strip(),
+                "NAME": unicode(NAME).strip(),
+                "URL": unicode(URL).strip(),
+                "DATE_OF_PUBLICATION": unicode(DATE_OF_PUBLICATION).strip(),
+                "DATE_OF_PUBLICATION_clean": unicode(DATE_OF_PUBLICATION_clean).strip(),
+                "RESPONSE_DEADLINE": unicode(RESPONSE_DEADLINE).strip(),
+                "RESPONSE_DEADLINE_clean": unicode(RESPONSE_DEADLINE_clean).strip(),
+                "PROCESS": unicode(PROCESS).strip(),
+                "BUYERS": unicode(BUYERS).strip(),
+                "COUNTRIES": unicode(COUNTRIES)}
 
 		scraperwiki.sqlite.save(unique_keys=['RFT_ID'], data = data )
 
