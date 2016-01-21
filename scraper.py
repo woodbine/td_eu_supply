@@ -150,7 +150,6 @@ def Navigation(link):
             button.click()
 
 
-
 def main():
     urls = [
         #"https://nhssbs.eu-supply.com/ctm/supplier/publictenders?b=NHSSBS",\
