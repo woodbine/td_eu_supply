@@ -39,7 +39,6 @@ def NumberPage(browser):
     table = htmltext.find('ul',{'class':'ctm-pager-info'})
     text = table.text
     l = text.split(" ")
-    print l
     return int(l[1])
 
 
@@ -98,10 +97,14 @@ def page_details(browser, link):
         browser.visit(URL)
         htmlsoup = BeautifulSoup(browser.html, "html.parser")
         details = htmlsoup.find('frame', title='tender_details')
+
         NEW_URL = URL.encode('utf-8').split('/app')[0] + details['src']
         browser.visit(NEW_URL)
         htmlsoup = BeautifulSoup(browser.html, "html.parser")
-
+        try:
+            SHORT_DESCRIPTION = htmlsoup.find('span', text="Short description").findNext('br').text
+        except:
+            SHORT_DESCRIPTION = ""
         try:
             DESCRIPTION = htmlsoup.find('span', text="Detailed description").findNext('br').text
         except:
@@ -119,6 +122,7 @@ def page_details(browser, link):
                 "PROCESS": unicode(PROCESS).strip(),
                 "BUYERS": unicode(BUYERS).strip(),
                 "DESCRIPTION": unicode(DESCRIPTION),
+                "SHORT_DESCRIPTION": unicode(SHORT_DESCRIPTION),
                 "COUNTRIES": unicode(COUNTRIES)}
 
         scraperwiki.sqlite.save(unique_keys=['RFT_ID'], data = data )
@@ -148,6 +152,7 @@ def Navigation(link):
             browser.visit(link)
             button = browser.find_by_css("i[class='icon-forward']")
             button.click()
+
 
 
 def main():
