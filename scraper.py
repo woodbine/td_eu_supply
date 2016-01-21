@@ -99,8 +99,10 @@ def page_details(browser, link):
         details = htmlsoup.find('frame', title='tender_details')
 
         NEW_URL = URL.encode('utf-8').split('/app')[0] + details['src']
+        print NEW_URL
         browser.visit(NEW_URL)
         htmlsoup = BeautifulSoup(browser.html, "html.parser")
+
         try:
             SHORT_DESCRIPTION = htmlsoup.find('span', text="Short description").findNext('br').text
         except:
@@ -109,6 +111,38 @@ def page_details(browser, link):
             DESCRIPTION = htmlsoup.find('span', text="Detailed description").findNext('br').text
         except:
             DESCRIPTION = ""
+
+        clean_string = ['\xc2\xa0\xc2\xa0', '  ', '<br/>', '</br>', '</']
+        try:
+            CPV_CODES = htmlsoup.find('span', text="CPV codes").findNext('br')
+            CPV_CODES = str(CPV_CODES).replace('\n', ': ').strip('<br>')
+            for s in clean_string:
+                CPV_CODES = CPV_CODES.replace(s, '')
+            CPV_CODES = CPV_CODES.split('<br>')
+            CPV_CODES = [x.encode('ascii','ignore') for x in CPV_CODES]
+        except:
+            CPV_CODES = ""
+        try:
+            ADDRESS = (htmlsoup.find('td', rowspan="3").findNext('span', {"class":"celllbl"}).findNext('br').text).strip('View profile')
+        except:
+            ADDRESS = ""
+        try:
+            CONTACT = htmlsoup.find('td', rowspan="3").findNext('span', {"class":"celllbl"}).findNext('span', {"class":"celllbl"}).findNext('br').contents
+        except:
+            CONTACT = ''
+        try:
+            CONTACT_NAME = CONTACT[0]#.encode('utf-8')
+        except:
+            CONTACT_NAME = ''
+        try:
+            CONTACT_DETAILS = CONTACT[1].text.replace('\n', '')
+            CONTACT_DETAILS = CONTACT_DETAILS.replace('  ', '')
+            CONTACT_DETAILS = CONTACT_DETAILS.replace('-', '')
+            CONTACT_PHONE = (CONTACT_DETAILS.replace('Phone: ', ''))[:16]
+            if not str(CONTACT_PHONE).find('www') == -1:
+                CONTACT_PHONE = ''
+        except:
+            CONTACT_PHONE = ''
 
 
         data = {"RFT_ID" : unicode(RFT_ID).strip(),
@@ -123,7 +157,11 @@ def page_details(browser, link):
                 "BUYERS": unicode(BUYERS).strip(),
                 "DESCRIPTION": unicode(DESCRIPTION),
                 "SHORT_DESCRIPTION": unicode(SHORT_DESCRIPTION),
-                "COUNTRIES": unicode(COUNTRIES)}
+                "COUNTRIES": unicode(COUNTRIES),
+                "CPV_CODES": unicode(CPV_CODES),
+                "ADDRESS": unicode(ADDRESS),
+                "CONTACT_NAME": unicode(CONTACT_NAME),
+                "CONTACT_PHONE": unicode(CONTACT_PHONE)}
 
         scraperwiki.sqlite.save(unique_keys=['RFT_ID'], data = data )
 
